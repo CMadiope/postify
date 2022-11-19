@@ -9,7 +9,7 @@ import { useEffect } from "react";
 const Login = () => {
   const route = useRouter();
   const [user, loading] = useAuthState(auth);
-
+  console.log(user);
   //google sign in
   const googleProvider = new GoogleAuthProvider();
   const GoogleLogin = async () => {
@@ -28,7 +28,7 @@ const Login = () => {
       console.log("login");
     }
   }, [user]);
-  
+
   return (
     <div className='shadow-xl mt-32 p-10 tet-gray-700 rounded-lg'>
       <h2 className='text-2xl font-medium'>Join Today</h2>
