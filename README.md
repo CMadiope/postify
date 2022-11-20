@@ -15,13 +15,11 @@ Users should be able to:
 ### Built with
 
 - Semantic HTML5 markup
-- CSS custom properties
-- Flexbox
-- CSS Grid
 - [React](https://reactjs.org/) - JS library
-- Nextjs
+- [Nextjs] (https://nextjs.org/)
 - Firebase
-- React toastify
+- [Tailwindcss] (https://tailwindcss.com/docs/installation)
+- React toastify (https://www.npmjs.com/package/react-toastify)
 
 ### What I learned
 
