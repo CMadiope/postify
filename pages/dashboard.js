@@ -14,6 +14,7 @@ import {
 import Message from "../components/Message";
 import { BsTrash2Fill } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
+import Link from "next/link";
 
 const Dashboard = () => {
   const route = useRouter();
@@ -56,9 +57,12 @@ const Dashboard = () => {
                 >
                   <BsTrash2Fill className='text-2xl' /> Delete
                 </button>
-                <button className='text-teal-600 flex items-center justify-center gap-2 py-2 text-sm'>
-                  <AiFillEdit className='text-2xl' /> Edit
-                </button>
+                <Link href={{ pathname: "/posts", query: post }}>
+                  <button className='text-teal-600 flex items-center justify-center gap-2 py-2 text-sm'>
+                    <AiFillEdit className='text-2xl' />
+                    Edit
+                  </button>
+                </Link>
               </div>
             </Message>
           );
