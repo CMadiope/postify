@@ -2,7 +2,13 @@ import React from "react";
 import { auth, db } from "../utils/firebase";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "react-toastify";
 
@@ -11,7 +17,6 @@ const Posts = () => {
   const [user, loading] = useAuthState(auth);
   const route = useRouter();
   const routeData = route.query;
-  console.log(route);
 
   const submitPost = async (e) => {
     e.preventDefault();
@@ -31,18 +36,25 @@ const Posts = () => {
       });
       return;
     }
-
-    //make new post
-    const collectionRef = collection(db, "posts");
-    await addDoc(collectionRef, {
-      ...post,
-      timestamp: serverTimestamp(),
-      user: user.uid,
-      avatar: user.photoURL,
-      username: user.displayName,
-    });
-    setPost({ description: "" });
-    return route.push("/");
+    if (post?.hasOwnProperty("id")) {
+      const docRef = doc(db, "posts", post.id);
+      const updatedPost = { ...post, timestamp: serverTimestamp() };
+      await updateDoc(docRef, updatedPost);
+      return route.push("/");
+    } else {
+      //make new post
+      const collectionRef = collection(db, "posts");
+      await addDoc(collectionRef, {
+        ...post,
+        timestamp: serverTimestamp(),
+        user: user.uid,
+        avatar: user.photoURL,
+        username: user.displayName,
+      });
+      setPost({ description: "" });
+      toast.success('Post has been made', {position: toast.POSITION.TOP_CENTER, autoClose: 1500,})
+      return route.push("/");
+    }
   };
   //check the user
   const checkUser = async () => {
@@ -59,7 +71,9 @@ const Posts = () => {
   return (
     <div className='my-20 p-12 shadow-lg rounded-lg max-w-md mx-auto'>
       <form onSubmit={submitPost}>
-        <h1 className='text-2xl font-bold'>{post.hasOwnProperty("id")? 'Edit your post': 'Create a new post'}</h1>
+        <h1 className='text-2xl font-bold'>
+          {post.hasOwnProperty("id") ? "Edit your post" : "Create a new post"}
+        </h1>
         <div className='py-2'>
           <h3 className='text-lg font-medium py-2'>Description</h3>
           <textarea
