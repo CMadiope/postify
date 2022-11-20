@@ -54,7 +54,7 @@ const Details = () => {
   useEffect(() => {
     if (!router.isReady) return;
     getComments();
-  }, []);
+  }, [router.isReady]);
 
   return (
     <div>
